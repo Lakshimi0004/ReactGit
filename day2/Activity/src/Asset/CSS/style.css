@@ -1,0 +1,22 @@
+.form1{
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    /* align-items:  center; */
+    
+    /* width: 100vh; */
+    
+}
+.mybtn{
+    display:flex;
+    align-items: center;
+    justify-content:center;
+    padding:1 rem;
+    gap: 0.8rem;
+    color: black;
+    font-weight:bold;
+}
+.lp{
+    
+}
