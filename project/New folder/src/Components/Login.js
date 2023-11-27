@@ -1,21 +1,37 @@
 import React, { useState } from 'react';
 import { TextField, Button, Container, Typography, Box, Link, Alert } from '@mui/material';
 import { Link as RouterLink } from "react-router-dom";
-
+import axios from "axios";
+// import '../Assests/Login.css';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showSuccess, setShowSuccess] = useState(false); // State to control the success message
+  const [showSuccess, setShowSuccess] = useState(false); 
 
-  const handleLogin = () => {
-    console.log('Login Successfully!!!');
-    console.log('Email:', email);
-    console.log('Password:', password);
-    setShowSuccess(true); // Set showSuccess to true to display the success message
-  };
+  const handleLogin=(e)=>{
+    e.preventDefault()
+    axios.get(`http://localhost:8000/posts?email=${email}&password=${password}`)
+    .then(res=>{
+      if(res.data.length>0){
+        alert('Logged in successfully')
+      }
+      else{
+        alert("invalid info")
+      }
+   }
+)
+    console.log(email)
+    console.log(password)
+}
+
 
   return (
-    <Container component="main" maxWidth="xs">
+    <>
+    <div className='snow'></div>
+    <div style={{backgroundImage: 'url(/Images/logback.png)',height:'800px'}}>
+      <br/><br/><br/><br/>
+    <Container component="main" maxWidth="xs" style={{border:"1px solid black", borderRadius:'8px', borderWidth:'2px', backgroundColor:'lightgray'}}
+    className='image-container img'>
       <Box
         sx={{
           marginTop: 8,
@@ -109,10 +125,12 @@ const Login = () => {
         },
       }}>
           Don't have an account?</Link>
+          <br/><br/><br/><br/>
         </Box>
 
       </Box>
     </Container>
+    </div></>
   );
 };
 

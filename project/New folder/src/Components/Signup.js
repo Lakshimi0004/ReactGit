@@ -1,4 +1,5 @@
-import * as React from "react";
+import * as React  from "react";
+import { useState } from 'react';
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,12 +11,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
-
+import axios from "axios";
 function Copyright(props) {
   return (
     <Typography
-      variant="body2"
-      color="text.secondary"
+    variant="body2"
+    color="text.secondary"
       align="center"
       {...props}
     >
@@ -32,18 +33,37 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Signup() {
+ const [formData,setFormData]=useState({
+  Name:'',
+  Email:'',
+  Password:'',
+ })
+  const handleChange=(e)=>{
+    const {name, value}=e.target;
+    setFormData({...formData,[name]:value});
+  }
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+    const {Name,Email,Password}=formData;
 
+    axios.post(`http://localhost:8000/posts`,{
+      Name,Email,Password
+    })
+    .then(
+      res=>{console.log(res)}
+    )
+    .catch(
+      err=>{
+        console.log(err)
+      }
+    )
+  };
   return (
+    <div  style={{backgroundImage: 'url(/Images/logback.png)',height:'800px'}}>
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <br/><br/><br/>
+      <Container component="main" maxWidth="xs" varient='outlined' style={{border:"1px solid black", borderRadius:'8px', borderWidth:'2px', backgroundColor:'lightgray'}}
+      className="img">
         <CssBaseline />
         <Box
           sx={{
@@ -64,58 +84,59 @@ export default function Signup() {
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
+
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} >
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
+                  id="Name"
+                  label="Name"
+                  name="Name"
                   autoComplete="family-name"
+                  value={formData.Name}
+                  onChange={handleChange}
+                  sx={{ backgroundColor: '#f3e5f5' }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="email"
+                  id="Email"
                   label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  name="Email"
+                  autoComplete="Email"
+                  value={formData.Email}
+                  onChange={handleChange}
+                  sx={{ backgroundColor: '#f3e5f5' }}
+                 
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="password"
+                  name="Password"
                   label="New Password"
-                  type="password"
+                  type="Password"
                   id="password"
                   autoComplete="new-password"
+                  value={formData.Password}
+                  onChange={handleChange}
+                  sx={{ backgroundColor: '#f3e5f5' }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="password"
+                  name="Password"
                   label="Confirm Password"
-                  type="password"
-                  id="password"
+                  type="Password"
+                  id="Password"
                   autoComplete="new-password"
+                  sx={{ backgroundColor: '#f3e5f5' }}
                 />
               </Grid>
               
@@ -125,16 +146,19 @@ export default function Signup() {
               fullWidth
               variant="contained"
               
-              
-              sx={{ mt: 3, mb: 2,backgroundColor: '#6f0000',
-              color: 'white',
-              '&:hover': {
-                backgroundColor: '#1D2671',
-              },
-              '&:focus': {
-                backgroundColor: '#1D2671',
-              },
-               }}
+              sx={{
+                mt: 3,
+                mb: 2,
+                backgroundColor: '#093637',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#44A08D',
+                },
+                '&:focus': {
+                  backgroundColor: '#44A08D',
+                },
+              }}
+              onClick={handleSubmit}
             >
               Sign Up
             </Button>
@@ -147,6 +171,7 @@ export default function Signup() {
     >
       Already have an account? Sign in
     </Link>
+    <br/><br/><br/>
   </Grid>
 </Grid>
 
@@ -155,5 +180,6 @@ export default function Signup() {
         <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
+    </div>
   );
 }
